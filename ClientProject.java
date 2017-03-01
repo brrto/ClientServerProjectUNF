@@ -16,7 +16,7 @@ the command is run (for option 6 prompt the user for a string to send.)
 
 User commands:
 1. Server current Date and Time
-2. Server Number of running processes 
+2. Server Number of running processes
 3. Server number of active socket connections
 4. Server time of last system boot
 5. Server current users

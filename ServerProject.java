@@ -32,7 +32,8 @@ public class CNTServerExample {
     ServerSocket listener = new ServerSocket(1234);
 
 		// Listen for client connections, this will block waiting for a connection
-		Socket socket = listener.accept();
+    // Needs to spawn new thread here
+    Socket socket = listener.accept();
 		System.out.println("Accepted Client connection");
 
 		// Attach a buffered reader to the socket's input stream
@@ -72,6 +73,7 @@ public class CNTServerExample {
 
 
 		socket.close();
+    //kill thread after here
 		return;
 
 	}
