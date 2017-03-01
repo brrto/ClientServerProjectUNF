@@ -23,17 +23,17 @@ import java.util.Date;
  * A TCP server thread that runs on port 1234.  When a client connects, it
  * reads a request number and responds to that request
  */
-public class CNTServerExample {
+public class ServerProject {
     public static void main(String[] args) throws IOException {
 		System.out.println("CNT4504 Server Socket Example\n");
 		System.out.println("Server starting on socket 1234");
 
 		// Create the socket and bind to port number 1234
-    ServerSocket listener = new ServerSocket(1234);
+      ServerSocket listener = new ServerSocket(1234);
 
 		// Listen for client connections, this will block waiting for a connection
-    // Needs to spawn new thread here
-    Socket socket = listener.accept();
+      // Needs to spawn new thread here
+      Socket socket = listener.accept();
 		System.out.println("Accepted Client connection");
 
 		// Attach a buffered reader to the socket's input stream
@@ -71,9 +71,8 @@ public class CNTServerExample {
 		}
 		out.println("ServerDone");
 
-
 		socket.close();
-    //kill thread after here
+      //kill thread after here
 		return;
 
 	}
