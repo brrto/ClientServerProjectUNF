@@ -10,6 +10,7 @@ Run linux commands for:
 5. Server current users
 6. Server echo back what is sent from client
 7. Quit -this should kill the child thread
+****Use port 2749***
 */
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,12 +19,17 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.io.*;
 
 /**
  * A TCP server thread that runs on port 1234.  When a client connects, it
  * reads a request number and responds to that request
  */
-public class ServerProject {
+public class ServerProject implements Runnable {
+    Socket csocket;
+    ServerProject(Socket csocket) {
+       this.csocket = csocket;
+    }
     public static void main(String[] args) throws IOException {
 		System.out.println("CNT4504 Server Socket Example\n");
 		System.out.println("Server starting on socket 1234");
@@ -33,14 +39,20 @@ public class ServerProject {
 
 		// Listen for client connections, this will block waiting for a connection
       // Needs to spawn new thread here
+      while(true){
       Socket socket = listener.accept();
 		System.out.println("Accepted Client connection");
+		new Thread(new ServerProject(socket)).start();
+      }
 
-		// Attach a buffered reader to the socket's input stream
-		BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	}
+   public void run(){
+      try{
+      // Attach a buffered reader to the socket's input stream
+		BufferedReader input = new BufferedReader(new InputStreamReader(csocket.getInputStream()));
 
 		// Attach a print writer to the socket's output stream
-		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		PrintWriter out = new PrintWriter(csocket.getOutputStream(), true);
 
 		// Read the request from the client
 		String answer = input.readLine();
@@ -57,7 +69,7 @@ public class ServerProject {
 		else
 		{
 			System.out.println("Unknown request ");
-			socket.close();
+			csocket.close();
 			return;
 		}
 
@@ -71,10 +83,12 @@ public class ServerProject {
 		}
 		out.println("ServerDone");
 
-		socket.close();
+		csocket.close();
+      }
+      catch(IOException e){
+         System.out.println("IOException");
+      }
       //kill thread after here
-		return;
-
-	}
+   }
 
 }

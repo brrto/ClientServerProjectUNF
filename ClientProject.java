@@ -22,6 +22,7 @@ User commands:
 5. Server current users
 6. Server echo back what is sent from client
 7. Quit
+****Use port 2749***
 */
 
 import java.io.BufferedReader;
