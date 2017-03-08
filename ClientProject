@@ -1,0 +1,284 @@
+/*
+To Do:
+Looping:
+1: Display menu
+2: Prompt user for command
+3: Prompt user for number of times to execute command
+4: Check user input for command validity. If user command or count is invalid, inform the
+user and redisplay the menu.
+5: Send that command request to the server the requested number of times. For each time
+the command is run (for option 6 prompt the user for a string to send.)
+  a. Get response back from server
+  b. Print “Request X is complete” (replace X with a number 1, 2, 3, etc.)
+  c. On the last response also, display the final response from the server
+6: Display the total amount of time that it took to run the command the specified number
+  of times in milliseconds.
+User commands:
+1. Server current Date and Time
+2. Server Number of running processes
+3. Server number of active socket connections
+4. Server time of last system boot
+5. Server current users
+6. Server echo back what is sent from client
+7. Quit
+****Use port 2749***
+*/
+
+package clientproject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class ClientProject {
+    
+    public static void main(String[] args) throws IOException {
+        // If there are no command line arguments print an error and exit.
+        if(args.length < 2) {
+            System.out.println("Usage: CNTClient <server IP Address> <port>\n");
+            System.exit(0);
+        }
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        // Try to connect to port and the IP address given on the command line.
+        Socket s=null;
+        try {
+            s = new Socket(args[0], Integer.parseInt(args[1]));
+        }
+        catch(Exception e) {
+            System.out.println("Error: Could not open a socket to " + args[0] + "\n");
+            System.exit(100);
+        }
+        
+        //Create a buffered reader attached to the socket's input stream.
+        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+        // Create a print writer attached to the socket's output stream.
+        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+        System.out.println("Connecting to server at "+args[0]+":"+args[1]);
+
+        while(true) {
+            // Display menu
+            int command = menu();
+            if(command==7)
+                break;
+            int numRequest = numSends();
+            
+            // Send commands
+            switch(command) {
+                case 1:
+                    System.out.println("Requesting system date and time");
+                    long start_time1 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++)
+                        out.println("MC:1");
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read/print lines from the server until reads "ServerDone"
+                    String answer1;
+                    int req1Count = 1;
+                    while((answer1 = input.readLine()) != null && !answer1.equals("ServerDone")) {
+                        System.out.println(answer1);
+                        System.out.println("Request " + req1Count + " is complete");
+                        req1Count++;
+                    }
+                    // Display final response from server
+                    if(answer1.equals("ServerDone"))
+                        System.out.println(answer1);
+                        
+                    long end_time1 = System.currentTimeMillis(); // End timer
+                    System.out.println("Date and time command took " + (end_time1-start_time1) + "ms");
+                    break;
+                    
+                case 2:
+                    System.out.println("Requesting number of running processes");
+                    long start_time2 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++)
+                        out.println("MC:2");
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read/print lines from the server until reads "ServerDone"
+                    String answer2;
+                    int req2Count = 1;
+                    while((answer2 = input.readLine()) != null && !answer2.equals("ServerDone")) {
+                        System.out.println(answer2);
+                        System.out.println("Request " + req2Count + " is complete");
+                        req2Count++;
+                    }
+                    // Display final response from server
+                    if(answer2.equals("ServerDone"))
+                        System.out.println(answer2);
+                        
+                    long end_time2 = System.currentTimeMillis(); // End timer
+                    System.out.println("Running processes command took " + (end_time2-start_time2) + "ms");
+                    break;
+                    
+                case 3:
+                    System.out.println("Requesting number of active socket connections");
+                    long start_time3 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++)
+                        out.println("MC:3");
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read/print lines from the server until reads "ServerDone"
+                    String answer3;
+                    int req3Count = 1;
+                    while((answer3 = input.readLine()) != null && !answer3.equals("ServerDone")) {
+                        System.out.println(answer3);
+                        System.out.println("Request " + req3Count + " is complete");
+                        req3Count++;
+                    }
+                    // Display final response from server
+                    if(answer3.equals("ServerDone"))
+                        System.out.println(answer3);
+                        
+                    long end_time3 = System.currentTimeMillis(); // End timer
+                    System.out.println("Active sockets command took " + (end_time3-start_time3) + "ms");
+                    break;
+                    
+                case 4:
+                    System.out.println("Requesting time of last system boot");
+                    long start_time4 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++)
+                        out.println("MC:4");
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read/print lines from the server until reads "ServerDone"
+                    String answer4;
+                    int req4Count = 1;
+                    while((answer4 = input.readLine()) != null && !answer4.equals("ServerDone")) {
+                        System.out.println(answer4);
+                        System.out.println("Request " + req4Count + " is complete");
+                        req4Count++;
+                    }
+                    // Display final response from server
+                    if(answer4.equals("ServerDone"))
+                        System.out.println(answer4);
+                        
+                    long end_time4 = System.currentTimeMillis(); // End timer
+                    System.out.println("Last system boot command took " + (end_time4-start_time4) + "ms");
+                    break;
+                    
+                case 5:
+                    System.out.println("Requesting current users");
+                    long start_time5 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++)
+                        out.println("MC:5");
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read/print lines from the server until reads "ServerDone"
+                    String answer5;
+                    int req5Count = 1;
+                    while((answer5 = input.readLine()) != null && !answer5.equals("ServerDone")) {
+                        System.out.println(answer5);
+                        System.out.println("Request " + req5Count + " is complete");
+                        req5Count++;
+                    }
+                    // Display final response from server
+                    if(answer5.equals("ServerDone"))
+                        System.out.println(answer5);
+                        
+                    long end_time5 = System.currentTimeMillis(); // End timer
+                    System.out.println("Current users command took " + (end_time5-start_time5) + "ms");
+                    break;
+                    
+                case 6:
+                    Scanner string = new Scanner(System.in);
+                    
+                    // Prompt user for string to be echoed
+                    System.out.println("Enter message: ");
+                    String message = string.next();
+                    
+                    System.out.println("Requesting server echo from client");
+                    long start_time6 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    for(int i=0; i<numRequest; i++) {
+                        out.println("MC:6");
+                        out.println(message);
+                    }
+                    
+                    System.out.println("Response from the server:\n");
+
+                    // Read and print lines from the server until reads "ServerDone"
+                    String answer6;
+                    int req6Count = 1;
+                    while((answer6 = input.readLine()) != null && !answer6.equals("ServerDone")) {
+                        System.out.println(answer6);
+                        System.out.println("Request " + req6Count + " is complete");
+                        req6Count++;
+                    }
+                    // Display final response from server
+                    if(answer6.equals("ServerDone"))
+                        System.out.println(answer6);
+                        
+                    long end_time6 = System.currentTimeMillis(); // End timer
+                    System.out.println("Echo command took " + (end_time6-start_time6) + "ms");
+                    break;
+                    
+                case 7:
+                    System.out.println("Requesting socket connection to be closed");
+                    long start_time7 = System.currentTimeMillis(); // Start timer
+                    
+                    // Send request
+                    out.println("MC:7");
+                        
+                    long end_time7 = System.currentTimeMillis(); // End timer
+                    System.out.println("Close socket command took " + (end_time7-start_time7) + "ms");
+                    break;
+            }
+        }
+    }
+    
+    public static int menu() {
+        Scanner input = new Scanner(System.in);
+        
+        // Display menu
+        System.out.print("Enter a command as a single integer:"
+                + "\n   1 - Server current date and time"
+                + "\n   2 - Server number of running processes"
+                + "\n   3 - Server number of active socket connections"
+                + "\n   4 - Server time of last system boot"
+                + "\n   5 - Server current users"
+                + "\n   6 - Server echo back what is sent from client"
+                + "\n   7 - Quit"
+                + "\nCommand: ");
+        int command = input.nextInt();
+        
+        if(command<1 || command>7){
+            System.out.println("\nERROR - Invalid command\n");
+            command = menu();
+        }
+        
+        return command;
+    }
+    
+    public static int numSends() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nEnter number of times the command should be run: ");
+        int x = input.nextInt();
+        if(x<1){
+            System.out.println("\nERROR - Invalid number\n");
+            x = numSends();
+        }
+        return x;
+    }
+}
